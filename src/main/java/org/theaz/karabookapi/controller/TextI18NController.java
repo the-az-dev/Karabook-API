@@ -66,4 +66,10 @@ public class TextI18NController {
         this.textI18NService.update(exitingTextI18N, textI18N);
         return new ResponseEntity<>(this.textI18NService.update(exitingTextI18N, textI18N), HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/")
+    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) String textKey){
+        this.textI18NService.delete(textKey);
+        return new ResponseEntity<>("Text deleted!", HttpStatus.OK);
+    }
 }

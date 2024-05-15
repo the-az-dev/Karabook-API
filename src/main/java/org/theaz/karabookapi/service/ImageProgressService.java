@@ -71,4 +71,8 @@ public class ImageProgressService {
         this.imageProgressRepository.save(exitingImageProgress);
         return exitingImageProgress;
     }
+
+    public void delete(Long imageProgressId){
+        this.imageProgressRepository.deleteByImageProgressId(imageProgressId);
+    }
 }

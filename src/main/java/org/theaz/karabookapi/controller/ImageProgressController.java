@@ -105,4 +105,10 @@ public class ImageProgressController {
         this.imageProgressService.update(exitingImageProgress, imageProgress);
         return new ResponseEntity<>("Image progress added!", HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/")
+    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageProgressId){
+        this.imageProgressService.delete(imageProgressId);
+        return new ResponseEntity<>("Image progress deleted!", HttpStatus.OK);
+    }
 }

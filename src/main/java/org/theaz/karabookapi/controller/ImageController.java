@@ -122,4 +122,10 @@ public class ImageController {
         }
     }
 
+    @DeleteMapping("/delete/")
+    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageId){
+        this.imageService.delete(imageId);
+        return new ResponseEntity<>("Image deleted!", HttpStatus.OK);
+    }
+
 }

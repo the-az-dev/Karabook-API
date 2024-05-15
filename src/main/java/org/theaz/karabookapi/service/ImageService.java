@@ -83,4 +83,8 @@ public class ImageService {
 
         return exitingImage;
     }
+
+    public void delete(Long imageId) {
+        imageRepository.deleteByImageId(imageId);
+    }
 }

@@ -11,4 +11,5 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     List<Image> findByEnabledAndIsDaily(Boolean enabled, Boolean isDaily);
     List<Image> findByIsDaily(Boolean isDaily);
     List<Image> findByCategoryIdAndIsDaily(Long categoryId, Boolean isDaily);
+    void deleteByImageId(Long imageId);
 }

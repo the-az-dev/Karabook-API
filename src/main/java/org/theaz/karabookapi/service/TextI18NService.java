@@ -59,4 +59,8 @@ public class TextI18NService {
 
         return exitingTextI18N;
     }
+
+    public void delete(String textKey){
+        this.textI18NRepository.deleteByTextKey(textKey);
+    }
 }
