@@ -1,13 +1,26 @@
 package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.theaz.karabookapi.entity.Locale;
 import org.theaz.karabookapi.service.LocaleService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/text/locale")
 public class LocaleController {
     @Autowired
     private LocaleService localeService;
+
+    @GetMapping("/get/all")
+    public List<Locale> getAll() {
+        return this.localeService.findAll();
+    }
+
+    @PostMapping(value = "/add", consumes = {"*/*"})
+    public String add(@RequestBody Locale locale){
+        this.localeService.save(locale);
+        return "Locale added successfully!";
+    }
 }
