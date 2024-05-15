@@ -52,4 +52,10 @@ public class TextI18NController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(value = "/add", consumes = {"*/*"})
+    public ResponseEntity<?> save(@ModelAttribute TextI18N textI18N){
+        this.textI18NService.save(textI18N);
+        return new ResponseEntity<>("Text added!", HttpStatus.OK);
+    }
 }

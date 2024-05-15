@@ -101,4 +101,10 @@ public class ImageController {
         }
     }
 
+    @PostMapping(value = "/add", consumes = {"*/*"})
+    public ResponseEntity<?> save(@ModelAttribute Image image){
+        this.imageService.save(image);
+        return new ResponseEntity<>("Image added!", HttpStatus.OK);
+    }
+
 }

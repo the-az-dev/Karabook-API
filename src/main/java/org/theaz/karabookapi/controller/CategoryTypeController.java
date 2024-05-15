@@ -1,8 +1,10 @@
 package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.theaz.karabookapi.entity.CategoryType;
 import org.theaz.karabookapi.service.CategoryTypeService;
 
 @RestController
@@ -10,4 +12,10 @@ import org.theaz.karabookapi.service.CategoryTypeService;
 public class CategoryTypeController {
     @Autowired
     private CategoryTypeService categoryTypeService;
+
+    @PostMapping(value = "/add", consumes = {"*/*"})
+    public ResponseEntity<?> addCategoryType(@ModelAttribute CategoryType categoryType) {
+        this.categoryTypeService.save(categoryType);
+        return new ResponseEntity<>("Category type Added!", HttpStatus.OK);
+    }
 }

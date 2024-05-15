@@ -17,4 +17,8 @@ public class CategoryTypeService {
     public List<CategoryType> findAll() {
         return this.categoryTypeRepository.findAll();
     }
+
+    public void save(CategoryType categoryType) {
+        this.categoryTypeRepository.save(categoryType);
+    }
 }

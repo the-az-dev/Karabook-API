@@ -21,4 +21,8 @@ public class TextI18NService {
     public TextI18N findByLocaleAndTextKey(String locale, String textKey) {
         return this.textI18NRepository.findByLocaleAndTextKey(locale, textKey);
     }
+
+    public void save(TextI18N textI18N){
+        this.textI18NRepository.save(textI18N);
+    }
 }

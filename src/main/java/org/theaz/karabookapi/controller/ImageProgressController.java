@@ -3,14 +3,10 @@ package org.theaz.karabookapi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.ImageProgressDTO;
 import org.theaz.karabookapi.dto.ImageProgressResponseDTO;
 import org.theaz.karabookapi.entity.ImageProgress;
-import org.theaz.karabookapi.response.ImageProgressChangesResponse;
 import org.theaz.karabookapi.service.ImageProgressService;
 
 import java.time.Instant;
@@ -94,5 +90,11 @@ public class ImageProgressController {
         }catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.CONFLICT);
         }
+    }
+
+    @PostMapping(value = "/add", consumes = {"*/*"})
+    public ResponseEntity<?> save(@ModelAttribute ImageProgress imageProgress){
+        this.imageProgressService.save(imageProgress);
+        return new ResponseEntity<>("Image progress added!", HttpStatus.OK);
     }
 }

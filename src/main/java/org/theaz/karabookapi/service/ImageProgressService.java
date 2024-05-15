@@ -26,4 +26,8 @@ public class ImageProgressService {
     public List<ImageProgress> getImageProgressByUserId(Long userId) {
         return this.imageProgressRepository.findAllByUserId(userId);
     }
+
+    public void save(ImageProgress imageProgress){
+        this.imageProgressRepository.save(imageProgress);
+    }
 }
