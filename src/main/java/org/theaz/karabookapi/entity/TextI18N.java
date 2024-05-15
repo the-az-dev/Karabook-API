@@ -17,12 +17,12 @@ import java.util.Date;
 @ToString
 public class TextI18N {
     @Id
-    @Column(columnDefinition = "varchar(64)")
-    private String text_key;
-    @Column(columnDefinition = "varchar(2048)")
-    private String text_value;
-    @Column(columnDefinition = "varchar(64)")
+    @Column(columnDefinition = "varchar(64)", name = "text_key")
+    private String textKey;
+    @Column(columnDefinition = "varchar(2048)", name = "text_value")
+    private String textValue;
+    @Column(columnDefinition = "varchar(64)", name = "locale")
     private String locale;
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date modified_date;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", name = "modified_date")
+    private Date modifiedDate;
 }

@@ -27,7 +27,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/get/all/ByIds")
+    @GetMapping("/get/all/ByIds/")
     public ResponseEntity<?> getAllById(@RequestParam(value = "value", required = true) String ids) {
         try {
             List<Image> images = new ArrayList<Image>();

@@ -5,6 +5,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.CategoryChangeDTO;
 import org.theaz.karabookapi.entity.Category;
+import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.service.*;
 
 import java.time.Instant;
@@ -24,6 +25,21 @@ public class CategoryController {
     public ResponseEntity<?> getAll() {
         try {
             return new ResponseEntity<>(this.categoryService.getAllCategories(), HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/get/all/ByIds/")
+    public ResponseEntity<?> getAllById(@RequestParam(value = "value", required = true) String ids) {
+        try {
+            List<Category> categories = new ArrayList<Category>();
+            String[] categoryIds = ids.split(",");
+            for (String categoryId : categoryIds) {
+                Category category = this.categoryService.getCategoryById(Long.parseLong(categoryId));
+                categories.add(category);
+            }
+            return new ResponseEntity<>(categories, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.CONFLICT);
         }

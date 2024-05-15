@@ -15,6 +15,6 @@ import lombok.*;
 @ToString
 public class Locale {
     @Id
-    @Column(columnDefinition = "varchar(64)")
+    @Column(columnDefinition = "varchar(64)", name = "locale")
     private String locale;
 }

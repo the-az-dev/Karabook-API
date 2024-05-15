@@ -24,16 +24,16 @@ public class ImageProgress {
             strategy = GenerationType.SEQUENCE,
             generator = "image_progress_sequence"
     )
-    private Long image_progress_id;
+    private Long imageProgressId;
 
-    @Column()
-    private Long user_id;
-    @Column()
-    private Long image_id;
-    @Column()
-    private String completed_image_parts;
-    @Column()
-    private Boolean is_completed;
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date modified_date;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "image_id")
+    private Long imageId;
+    @Column(name = "completed_image_parts")
+    private String completedImageParts;
+    @Column(name = "is_complete")
+    private Boolean isCompleted;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", name = "modified_date")
+    private Date modifiedDate;
 }
