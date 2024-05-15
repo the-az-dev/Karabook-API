@@ -23,7 +23,7 @@ public class CategoryParentController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> add(@ModelAttribute CategoryParent categoryParent) {
+    public ResponseEntity<?> add(@RequestBody CategoryParent categoryParent) {
         this.categoryParentService.save(categoryParent);
         return new ResponseEntity<>("Category parent Added!", HttpStatus.OK);
     }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.ImageChangeDTO;
+import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.service.ImageService;
 
@@ -102,9 +103,23 @@ public class ImageController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> save(@ModelAttribute Image image){
-        this.imageService.save(image);
-        return new ResponseEntity<>("Image added!", HttpStatus.OK);
+    public ResponseEntity<?> save(@RequestBody Image image){
+        try{
+            this.imageService.save(image);
+            return new ResponseEntity<>("Image added!", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping(value = "/update", consumes = {"*/*"})
+    public ResponseEntity<?> update(@RequestBody ImageUpdateDTO image){
+        try{
+            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
+            return new ResponseEntity<>(this.imageService.update(exitingImage, image), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
 }

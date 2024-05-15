@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.theaz.karabookapi.dto.TextI18NUpdateDTO;
 import org.theaz.karabookapi.entity.TextI18N;
 import org.theaz.karabookapi.service.TextI18NService;
 
@@ -54,8 +55,15 @@ public class TextI18NController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> save(@ModelAttribute TextI18N textI18N){
+    public ResponseEntity<?> save(@RequestBody TextI18N textI18N){
         this.textI18NService.save(textI18N);
         return new ResponseEntity<>("Text added!", HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update", consumes = {"*/*"})
+    public ResponseEntity<?> update(@RequestBody TextI18NUpdateDTO textI18N){
+        TextI18N exitingTextI18N = this.textI18NService.findByTextKey(textI18N.getTextKey());
+        this.textI18NService.update(exitingTextI18N, textI18N);
+        return new ResponseEntity<>(this.textI18NService.update(exitingTextI18N, textI18N), HttpStatus.OK);
     }
 }

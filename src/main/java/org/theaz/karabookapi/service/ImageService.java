@@ -3,9 +3,11 @@ package org.theaz.karabookapi.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.repository.ImageRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,5 +42,45 @@ public class ImageService {
 
     public Image save(Image image) {
         return imageRepository.save(image);
+    }
+
+    public Image update(Image exitingImage, ImageUpdateDTO image) {
+        Date newDate = new Date();
+
+        exitingImage.setImageId(
+                image.getImageId() != null
+                        ? image.getImageId()
+                        : exitingImage.getImageId()
+        );
+
+        exitingImage.setImageRawData(
+                image.getImageRawData() != null
+                        ? image.getImageRawData()
+                        : exitingImage.getImageRawData()
+        );
+
+        exitingImage.setCategoryId(
+                image.getCategoryId() != null
+                        ? image.getCategoryId()
+                        : exitingImage.getCategoryId()
+        );
+
+        exitingImage.setEnabled(
+                image.getEnabled() != null
+                        ? image.getEnabled()
+                        : exitingImage.getEnabled()
+        );
+
+        exitingImage.setIsDaily(
+                image.getIsDaily() != null
+                        ? image.getIsDaily()
+                        : exitingImage.getIsDaily()
+        );
+
+        exitingImage.setModifiedDate(newDate);
+
+        imageRepository.save(exitingImage);
+
+        return exitingImage;
     }
 }

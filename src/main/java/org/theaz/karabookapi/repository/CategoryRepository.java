@@ -6,6 +6,7 @@ import org.theaz.karabookapi.entity.Category;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    List<Category> findAllByCategoryTypeId(Long categoty_type_id);
-    Category findByCategoryId(Long categoty_sid);
+    List<Category> findAllByCategoryTypeId(Long categoryTypeId);
+    Category findByCategoryId(Long categoryId);
+    void deleteByCategoryId(Long categoryId);
 }

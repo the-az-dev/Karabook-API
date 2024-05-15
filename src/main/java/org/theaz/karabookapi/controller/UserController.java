@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> save(@ModelAttribute User user){
+    public ResponseEntity<?> save(@RequestBody User user){
         this.userService.save(user);
         return new ResponseEntity<>("User added!", HttpStatus.OK);
     }

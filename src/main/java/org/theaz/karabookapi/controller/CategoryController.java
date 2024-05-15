@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.CategoryChangeDTO;
+import org.theaz.karabookapi.dto.CategoryUpdateDTO;
 import org.theaz.karabookapi.entity.Category;
-import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.service.*;
 
 import java.time.Instant;
@@ -81,7 +81,7 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> addCategory(@RequestHeader String access_token, @ModelAttribute Category category) {
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
         try {
             this.categoryService.save(category);
             return new ResponseEntity<>("Category added to DB!", HttpStatus.OK);
@@ -90,13 +90,21 @@ public class CategoryController {
         }
     }
 
-    @PutMapping(value = "/update/", consumes = {"*/*"})
-    public ResponseEntity<?> updateCategory(@ModelAttribute Category category, @RequestParam(value = "id", required = true) Long categoty_id) {
+    @PutMapping(value = "/update", consumes = {"*/*"})
+    public ResponseEntity<?> updateCategory(@RequestBody CategoryUpdateDTO category) {
         try {
-            Category exitingCategory = this.categoryService.getCategoryById(categoty_id);
-            category.setCategoryId(exitingCategory.getCategoryId());
-            this.categoryService.save(category);
-            return new ResponseEntity<>("Category added to DB!", HttpStatus.OK);
+            Category exitingCategory = this.categoryService.getCategoryById(category.getCategoryId());
+            return new ResponseEntity<>(this.categoryService.update(exitingCategory, category), HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @DeleteMapping(value = "/delete/")
+    public ResponseEntity<?> deleteCategory(@RequestParam(value = "id", required = true) Long categotyId) {
+        try {
+            this.categoryService.delete(categotyId);
+            return new ResponseEntity<>("Category deleted!", HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }

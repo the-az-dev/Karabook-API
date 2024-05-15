@@ -14,7 +14,7 @@ public class CategoryTypeController {
     private CategoryTypeService categoryTypeService;
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> addCategoryType(@ModelAttribute CategoryType categoryType) {
+    public ResponseEntity<?> addCategoryType(@RequestBody CategoryType categoryType) {
         this.categoryTypeService.save(categoryType);
         return new ResponseEntity<>("Category type Added!", HttpStatus.OK);
     }

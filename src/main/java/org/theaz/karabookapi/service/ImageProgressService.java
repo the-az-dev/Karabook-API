@@ -3,9 +3,11 @@ package org.theaz.karabookapi.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.theaz.karabookapi.dto.ImageProgressUpdateDTO;
 import org.theaz.karabookapi.entity.ImageProgress;
 import org.theaz.karabookapi.repository.ImageProgressRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,5 +31,44 @@ public class ImageProgressService {
 
     public void save(ImageProgress imageProgress){
         this.imageProgressRepository.save(imageProgress);
+    }
+
+    public ImageProgress update(ImageProgress exitingImageProgress, ImageProgressUpdateDTO imageProgress){
+        Date newDate = new Date();
+
+        exitingImageProgress.setImageProgressId(
+                imageProgress.getImageProgressId() != null
+                        ? imageProgress.getImageProgressId()
+                        : exitingImageProgress.getImageProgressId()
+        );
+
+        exitingImageProgress.setUserId(
+                imageProgress.getUserId() != null
+                        ? imageProgress.getUserId()
+                        : exitingImageProgress.getUserId()
+        );
+
+        exitingImageProgress.setImageId(
+                imageProgress.getImageId() != null
+                        ? imageProgress.getImageId()
+                        : exitingImageProgress.getImageId()
+        );
+
+        exitingImageProgress.setCompletedImageParts(
+                imageProgress.getCompletedImageParts() != null
+                        ? imageProgress.getCompletedImageParts()
+                        : exitingImageProgress.getCompletedImageParts()
+        );
+
+        exitingImageProgress.setIsCompleted(
+                imageProgress.getIsCompleted() != null
+                        ? imageProgress.getIsCompleted()
+                        : exitingImageProgress.getIsCompleted()
+        );
+
+        exitingImageProgress.setModifiedDate(newDate);
+
+        this.imageProgressRepository.save(exitingImageProgress);
+        return exitingImageProgress;
     }
 }

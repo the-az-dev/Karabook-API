@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.ImageProgressDTO;
 import org.theaz.karabookapi.dto.ImageProgressResponseDTO;
+import org.theaz.karabookapi.dto.ImageProgressUpdateDTO;
 import org.theaz.karabookapi.entity.ImageProgress;
 import org.theaz.karabookapi.service.ImageProgressService;
 
@@ -93,8 +94,15 @@ public class ImageProgressController {
     }
 
     @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> save(@ModelAttribute ImageProgress imageProgress){
+    public ResponseEntity<?> save(@RequestBody ImageProgress imageProgress){
         this.imageProgressService.save(imageProgress);
+        return new ResponseEntity<>("Image progress added!", HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update", consumes = {"*/*"})
+    public ResponseEntity<?> update(@RequestBody ImageProgressUpdateDTO imageProgress){
+        ImageProgress exitingImageProgress = this.imageProgressService.getImageProgressById(imageProgress.getImageProgressId());
+        this.imageProgressService.update(exitingImageProgress, imageProgress);
         return new ResponseEntity<>("Image progress added!", HttpStatus.OK);
     }
 }
