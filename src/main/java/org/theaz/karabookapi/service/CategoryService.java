@@ -17,15 +17,15 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public List<Category> getAllCategories() {
-        return this.categoryRepository.findAll();
+        return this.categoryRepository.findAllByOrderBySortAsc();
     }
 
     public Category getCategoryById(Long categoryId) {
-        return this.categoryRepository.findByCategoryId(categoryId);
+        return this.categoryRepository.findByCategoryIdOrderBySortAsc(categoryId);
     }
 
     public List<Category> getAllCategoriesByCategoryTypeId(Long categoty_type_id) {
-        return this.categoryRepository.findAllByCategoryTypeId(categoty_type_id);
+        return this.categoryRepository.findAllByCategoryTypeIdOrderBySortAsc(categoty_type_id);
     }
 
     public void save(Category category) {

@@ -3,6 +3,7 @@ package org.theaz.karabookapi.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.theaz.karabookapi.dto.ImageChangeDTO;
 import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.repository.ImageRepository;
@@ -18,6 +19,18 @@ public class ImageService {
 
     public List<Image> getAllImages() {
         return imageRepository.findAll();
+    }
+
+    public List<ImageChangeDTO> getAllImageChanges(){
+        List<ImageChangeDTO> result = imageRepository.findAll().stream().map( (Image image) -> {
+            return new ImageChangeDTO(
+                    image.getImageId(),
+                    image.getModifiedDate().getTime(),
+                    image.getCategoryId(),
+                    image.getIsDaily()
+                    );
+        }).toList();
+        return result;
     }
 
     public Image getImageByImageId(Long imageId) {

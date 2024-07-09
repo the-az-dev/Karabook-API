@@ -19,12 +19,16 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    /**
+     *
+     * @return List<Image>
+     */
     @GetMapping("/get/all")
     public ResponseEntity<?> getAll() {
         try {
             return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
         }catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 
@@ -64,19 +68,10 @@ public class ImageController {
     }
 
     @GetMapping("/get/all/ByModifiedDate")
-    public ResponseEntity<?> getAllImagesByModifiedDate() {
+    public ResponseEntity<?> getAllImageChangesByModifiedDate() {
         try {
-            List<Image> images = this.imageService.getAllImages();
-            List<ImageChangeDTO> imageChanges = new ArrayList<ImageChangeDTO>();
-            for (Image image : images) {
-                Instant instant = image.getModifiedDate().toInstant();
-                long milliseconds = instant.toEpochMilli();
-                ImageChangeDTO imageChangeDTO = new ImageChangeDTO();
-                imageChangeDTO.imageId = image.getImageId();
-                imageChangeDTO.modifiedDate = String.valueOf(milliseconds);
-                imageChanges.add(imageChangeDTO);
-            }
-            return new ResponseEntity<>(imageChanges, HttpStatus.OK);
+            List<ImageChangeDTO> imagesChanges = this.imageService.getAllImageChanges();
+            return new ResponseEntity<>(imagesChanges, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.CONFLICT);
         }
