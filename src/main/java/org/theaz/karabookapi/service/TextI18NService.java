@@ -1,7 +1,6 @@
 package org.theaz.karabookapi.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.theaz.karabookapi.dto.TextI18NUpdateDTO;
 import org.theaz.karabookapi.entity.TextI18N;
@@ -13,11 +12,19 @@ import java.util.List;
 @Service
 @Transactional
 public class TextI18NService {
-    @Autowired
-    private TextI18NRepository textI18NRepository;
+
+    private final TextI18NRepository textI18NRepository;
+
+    public TextI18NService(TextI18NRepository textI18NRepository) {
+        this.textI18NRepository = textI18NRepository;
+    }
 
     public List<TextI18N> findAll() {
         return this.textI18NRepository.findAll();
+    }
+
+    public List<TextI18N> getAllTextByLocale(String locale){
+        return this.textI18NRepository.findAllByLocale(locale);
     }
 
     public TextI18N findByTextKey(String textKey) {
