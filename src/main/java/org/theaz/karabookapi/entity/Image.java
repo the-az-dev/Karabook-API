@@ -38,6 +38,9 @@ public class Image {
     @Column(name = "modified_date")
     private Date modifiedDate;
 
+    @Column(name = "sort")
+    private Long sort;
+
     @Column(name = "is_daily")
     private Boolean isDaily;
 }

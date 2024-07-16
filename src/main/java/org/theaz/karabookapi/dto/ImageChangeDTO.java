@@ -9,4 +9,5 @@ public class ImageChangeDTO {
     public Long modifiedDate;
     public Long categoryId;
     public Boolean isDaily;
+    public Long sort;
 }

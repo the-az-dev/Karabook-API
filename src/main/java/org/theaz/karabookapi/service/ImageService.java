@@ -8,7 +8,6 @@ import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.repository.ImageRepository;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,14 +21,13 @@ public class ImageService {
     }
 
     public List<ImageChangeDTO> getAllImageChanges(){
-        List<ImageChangeDTO> result = imageRepository.findAll().stream().map( (Image image) -> {
-            return new ImageChangeDTO(
-                    image.getImageId(),
-                    image.getModifiedDate().getTime(),
-                    image.getCategoryId(),
-                    image.getIsDaily()
-                    );
-        }).toList();
+        List<ImageChangeDTO> result = imageRepository.findAll().stream().map( (Image image) -> new ImageChangeDTO(
+                image.getImageId(),
+                image.getModifiedDate().getTime(),
+                image.getCategoryId(),
+                image.getIsDaily(),
+                image.getSort()
+                )).toList();
         return result;
     }
 
@@ -57,44 +55,44 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image update(Image exitingImage, ImageUpdateDTO image) {
-        Date newDate = new Date();
-
-        exitingImage.setImageId(
+    public Image update(Image existingImage, ImageUpdateDTO image) {
+        existingImage.setImageId(
                 image.getImageId() != null
                         ? image.getImageId()
-                        : exitingImage.getImageId()
+                        : existingImage.getImageId()
         );
 
-        exitingImage.setImageRawData(
+        existingImage.setImageRawData(
                 image.getImageRawData() != null
                         ? image.getImageRawData()
-                        : exitingImage.getImageRawData()
+                        : existingImage.getImageRawData()
         );
 
-        exitingImage.setCategoryId(
+        existingImage.setCategoryId(
                 image.getCategoryId() != null
                         ? image.getCategoryId()
-                        : exitingImage.getCategoryId()
+                        : existingImage.getCategoryId()
         );
 
-        exitingImage.setEnabled(
+        existingImage.setEnabled(
                 image.getEnabled() != null
                         ? image.getEnabled()
-                        : exitingImage.getEnabled()
+                        : existingImage.getEnabled()
         );
 
-        exitingImage.setIsDaily(
+        existingImage.setIsDaily(
                 image.getIsDaily() != null
                         ? image.getIsDaily()
-                        : exitingImage.getIsDaily()
+                        : existingImage.getIsDaily()
         );
 
-        exitingImage.setModifiedDate(newDate);
+        existingImage.setSort(
+                image.getSort() != null ? image.getSort(): existingImage.getSort()
+        );
 
-        imageRepository.save(exitingImage);
+        imageRepository.save(existingImage);
 
-        return exitingImage;
+        return existingImage;
     }
 
     public void delete(Long imageId) {
