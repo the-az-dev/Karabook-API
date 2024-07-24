@@ -3,13 +3,14 @@ package org.theaz.karabookapi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.theaz.karabookapi.dto.ImageChangeDTO;
-import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.service.ImageService;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +20,28 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    /**
+     * Повертає список всіх картинок
+     * Не рекомендується
+     * Краще використовуйте /get/all/ByCategory/
+     * @return
+     */
     @GetMapping("/get/all")
     public ResponseEntity<?> getAll() {
         try {
             return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
         }catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 
+    /**
+     * Повертає список картинок за списком їх айді
+     * @param ids передаються в строковому вигляді, розділені комою
+     * @return
+     */
     @GetMapping("/get/all/ByIds/")
-    public ResponseEntity<?> getAllById(@RequestParam(value = "value", required = true) String ids) {
+    public ResponseEntity<?> getAllByIds(@RequestParam(value = "value", required = true) String ids) {
         try {
             List<Image> images = new ArrayList<Image>();
             String[] imageIds = ids.split(",");
@@ -45,6 +57,12 @@ public class ImageController {
 
     // For User
 
+    /**
+     * Повертає список картинок для категорії за її айді
+     * Не повертає daily картинки
+     * @param categoryId
+     * @return
+     */
     @GetMapping("/get/all/ByCategory/")
     public ResponseEntity<?> getAllImagesByEnabledAndCategoryIdAndIsNotDaily(@RequestParam(value = "value", required = true) Long categoryId) {
         try {
@@ -54,6 +72,11 @@ public class ImageController {
         }
     }
 
+    /**
+     * Повертає список дейлі картинок
+     * Повертає тільки ті, що enabled
+     * @return
+     */
     @GetMapping("/get/all/ByDaily/forUser")
     public ResponseEntity<?> getAllImagesByDailyAndEnabled() {
         try {
@@ -63,20 +86,15 @@ public class ImageController {
         }
     }
 
+    /**
+     * Повертає дто змін для всіх картинок
+     * @return
+     */
     @GetMapping("/get/all/ByModifiedDate")
-    public ResponseEntity<?> getAllImagesByModifiedDate() {
+    public ResponseEntity<?> getAllImageChangesByModifiedDate() {
         try {
-            List<Image> images = this.imageService.getAllImages();
-            List<ImageChangeDTO> imageChanges = new ArrayList<ImageChangeDTO>();
-            for (Image image : images) {
-                Instant instant = image.getModifiedDate().toInstant();
-                long milliseconds = instant.toEpochMilli();
-                ImageChangeDTO imageChangeDTO = new ImageChangeDTO();
-                imageChangeDTO.imageId = image.getImageId();
-                imageChangeDTO.modifiedDate = String.valueOf(milliseconds);
-                imageChanges.add(imageChangeDTO);
-            }
-            return new ResponseEntity<>(imageChanges, HttpStatus.OK);
+            List<ImageChangeDTO> imagesChanges = this.imageService.getAllImageChanges();
+            return new ResponseEntity<>(imagesChanges, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.CONFLICT);
         }
@@ -93,6 +111,10 @@ public class ImageController {
         }
     }
 
+    /**
+     * Повертає ВСІ daily картинки
+     * @return
+     */
     @GetMapping("/get/all/ByDaily/forAdmin")
     public ResponseEntity<?> getAllImagesByDaily() {
         try {
@@ -102,30 +124,30 @@ public class ImageController {
         }
     }
 
-    @PostMapping(value = "/add", consumes = {"*/*"})
-    public ResponseEntity<?> save(@RequestBody Image image){
-        try{
-            this.imageService.save(image);
-            return new ResponseEntity<>("Image added!", HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
+//    @PostMapping(value = "/add", consumes = {"*/*"})
+//    public ResponseEntity<?> save(@RequestBody Image image){
+//        try{
+//            this.imageService.save(image);
+//            return new ResponseEntity<>("Image added!", HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
 
-    @PutMapping(value = "/update", consumes = {"*/*"})
-    public ResponseEntity<?> update(@RequestBody ImageUpdateDTO image){
-        try{
-            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
-            return new ResponseEntity<>(this.imageService.update(exitingImage, image), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
-
-    @DeleteMapping("/delete/")
-    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageId){
-        this.imageService.delete(imageId);
-        return new ResponseEntity<>("Image deleted!", HttpStatus.OK);
-    }
+//    @PutMapping(value = "/update", consumes = {"*/*"})
+//    public ResponseEntity<?> update(@RequestBody ImageUpdateDTO image){
+//        try{
+//            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
+//            return new ResponseEntity<>(this.imageService.update(exitingImage, image), HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
+//
+//    @DeleteMapping("/delete/")
+//    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageId){
+//        this.imageService.delete(imageId);
+//        return new ResponseEntity<>("Image deleted!", HttpStatus.OK);
+//    }
 
 }

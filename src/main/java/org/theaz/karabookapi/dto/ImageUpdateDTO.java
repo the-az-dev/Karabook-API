@@ -12,4 +12,5 @@ public class ImageUpdateDTO {
     public Boolean enabled;
     public Date modifiedDate;
     public Boolean isDaily;
+    public Long sort;
 }

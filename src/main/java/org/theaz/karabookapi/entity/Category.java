@@ -11,15 +11,15 @@ import java.util.Date;
 public class Category {
     @Id
     @Column(name = "category_id")
-    @SequenceGenerator(
-            name = "category_sequence",
-            sequenceName = "category_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "category_sequence"
-    )
+//    @SequenceGenerator(
+//            name = "category_sequence",
+//            sequenceName = "category_sequence",
+//            allocationSize = 1
+//    )
+//    @GeneratedValue(
+//            strategy = GenerationType.SEQUENCE,
+//            generator = "category_sequence"
+//    )
     private Long categoryId;
 
     @Column(nullable = false, columnDefinition = "varchar(64)", name = "category_name_key")
@@ -36,6 +36,9 @@ public class Category {
 
     @Column(name = "category_type_id")
     private Long categoryTypeId = 0L;
+
+    @Column(name="sort")
+    private Long sort;
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", name = "modified_date")
     private Date modifiedDate;
