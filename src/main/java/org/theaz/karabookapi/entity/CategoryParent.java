@@ -9,15 +9,7 @@ import lombok.*;
 public class CategoryParent {
     @Id
     @Column(name = "id")
-    @SequenceGenerator(
-            name = "category_parent_sequence",
-            sequenceName = "category_parent_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "category_parent_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(columnDefinition = "NOT NULL", name = "category_id")

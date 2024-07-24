@@ -2,14 +2,21 @@ package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.theaz.karabookapi.dto.ImageChangeDTO;
+import org.theaz.karabookapi.dto.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.service.ImageService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +51,16 @@ public class ImageController {
     public ResponseEntity<?> getAllByIds(@RequestParam(value = "value", required = true) String ids) {
         try {
             List<Image> images = new ArrayList<Image>();
-            String[] imageIds = ids.split(",");
-            for (String imageId : imageIds) {
-                Image image = this.imageService.getImageByImageId(Long.parseLong(imageId));
+            if (ids.split(",") == null) {
+                Image image = this.imageService.getImageByImageId(Long.parseLong(ids));
                 images.add(image);
+            }
+            else{
+                String[] imageIds = ids.split(",");
+                for (String id : imageIds) {
+                    Image image = this.imageService.getImageByImageId(Long.parseLong(id));
+                    images.add(image);
+                }
             }
             return new ResponseEntity<>(images, HttpStatus.OK);
         }catch (Exception e) {
@@ -124,30 +137,30 @@ public class ImageController {
         }
     }
 
-//    @PostMapping(value = "/add", consumes = {"*/*"})
-//    public ResponseEntity<?> save(@RequestBody Image image){
-//        try{
-//            this.imageService.save(image);
-//            return new ResponseEntity<>("Image added!", HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-//        }
-//    }
+   @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+   public ResponseEntity<?> save(@RequestBody Image image){
+       try{
+           this.imageService.save(image);
+           return new ResponseEntity<>("Image added!", HttpStatus.OK);
+       }catch (Exception e){
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+       }
+   }
 
-//    @PutMapping(value = "/update", consumes = {"*/*"})
-//    public ResponseEntity<?> update(@RequestBody ImageUpdateDTO image){
-//        try{
-//            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
-//            return new ResponseEntity<>(this.imageService.update(exitingImage, image), HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-//        }
-//    }
-//
-//    @DeleteMapping("/delete/")
-//    public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageId){
-//        this.imageService.delete(imageId);
-//        return new ResponseEntity<>("Image deleted!", HttpStatus.OK);
-//    }
+   @PutMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+   public ResponseEntity<?> update(@RequestBody ImageUpdateDTO image){
+       try{
+           Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
+           return new ResponseEntity<>(this.imageService.update(exitingImage, image), HttpStatus.OK);
+       }catch (Exception e){
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+       }
+   }
+
+   @DeleteMapping("/delete/")
+   public ResponseEntity<?> delete(@RequestParam(value = "id", required = true) Long imageId){
+       this.imageService.delete(imageId);
+       return new ResponseEntity<>("Image deleted!", HttpStatus.OK);
+   }
 
 }

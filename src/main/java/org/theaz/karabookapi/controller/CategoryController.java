@@ -34,10 +34,16 @@ public class CategoryController {
     public ResponseEntity<?> getAllById(@RequestParam(value = "value", required = true) String ids) {
         try {
             List<Category> categories = new ArrayList<Category>();
-            String[] categoryIds = ids.split(",");
-            for (String categoryId : categoryIds) {
-                Category category = this.categoryService.getCategoryById(Long.parseLong(categoryId));
+            if (ids.split(",") == null) {
+                Category category = this.categoryService.getCategoryById(Long.parseLong(ids));
                 categories.add(category);
+            }
+            else{
+                String[] categoryIds = ids.split(",");
+                for (String id : categoryIds) {
+                    Category category = this.categoryService.getCategoryById(Long.parseLong(id));
+                    categories.add(category);
+                }
             }
             return new ResponseEntity<>(categories, HttpStatus.OK);
         }catch (Exception e) {
@@ -80,7 +86,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping(value = "/add", consumes = {"*/*"})
+    @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
         try {
             this.categoryService.save(category);
@@ -90,7 +96,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping(value = "/update", consumes = {"*/*"})
+    @PutMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateCategory(@RequestBody CategoryUpdateDTO category) {
         try {
             Category exitingCategory = this.categoryService.getCategoryById(category.getCategoryId());

@@ -9,4 +9,7 @@ public interface ImageProgressRepository extends JpaRepository<ImageProgress, Lo
     ImageProgress findByImageProgressId(Long imageProgressId);
     List<ImageProgress> findAllByUserId(Long userId);
     void deleteByImageProgressId(Long imageProgressId);
+    void deleteByUserId(Long userId);
+    void deleteByImageId(Long imageId);
+    void deleteByImageIdAndUserId(Long imageId, Long userId);
 }

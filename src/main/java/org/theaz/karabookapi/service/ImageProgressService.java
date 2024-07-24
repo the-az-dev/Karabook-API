@@ -72,7 +72,19 @@ public class ImageProgressService {
         return exitingImageProgress;
     }
 
-    public void delete(Long imageProgressId){
+    public void deleteById(Long imageProgressId){
         this.imageProgressRepository.deleteByImageProgressId(imageProgressId);
+    }
+
+    public void deleteByImageId(Long imageProgressId){
+        this.imageProgressRepository.deleteByImageId(imageProgressId);
+    }
+
+    public void deleteByUserId(Long userId){
+        this.imageProgressRepository.deleteByUserId(userId);
+    }
+
+    public void deleteByUserIdAndImageId(Long imageId, Long userId){
+        this.imageProgressRepository.deleteByImageIdAndUserId(imageId, userId);
     }
 }

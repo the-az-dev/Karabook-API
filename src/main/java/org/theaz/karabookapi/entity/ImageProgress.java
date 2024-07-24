@@ -15,15 +15,7 @@ import java.util.Date;
 public class ImageProgress {
     @Id
     @Column(name = "image_progress_id")
-    @SequenceGenerator(
-            name = "image_progress_sequence",
-            sequenceName = "image_progress_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "image_progress_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageProgressId;
 
     @Column(name = "user_id")

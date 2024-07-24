@@ -2,6 +2,7 @@ package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.entity.User;
@@ -23,9 +24,11 @@ public class UserController {
         return new ResponseEntity<>(this.userService.findByUserEmail(email), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/add", consumes = {"*/*"})
+    @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> save(@RequestBody User user){
+        if(!user.getUserEmail().contains("@") || user.getUserEmail().length() < 6) return new ResponseEntity<>(!user.getUserEmail().contains("@") ? "Users mail does not contain @ character! Please check user mail and try again!" : user.getUserEmail().length() < 6 ? "Users mail is too short! Please check user mail and try again!" : "Users mail is invalid! Please check user mail and try again!", HttpStatus.CONFLICT);
         this.userService.save(user);
-        return new ResponseEntity<>("User added!", HttpStatus.OK);
+        User newUser = this.userService.findByUserEmail(user.getUserEmail());
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 }

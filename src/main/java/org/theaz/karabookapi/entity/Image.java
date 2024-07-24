@@ -15,15 +15,7 @@ import java.util.Date;
 public class Image {
     @Id
     @Column(name = "image_id")
-//    @SequenceGenerator(
-//            name = "image_sequence",
-//            sequenceName = "image_sequence",
-//            allocationSize = 1
-//    )
-//    @GeneratedValue(
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "image_sequence"
-//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
     @Column(name = "image_raw_data", columnDefinition = "LONGTEXT")

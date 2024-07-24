@@ -11,15 +11,7 @@ import java.util.Date;
 public class Category {
     @Id
     @Column(name = "category_id")
-//    @SequenceGenerator(
-//            name = "category_sequence",
-//            sequenceName = "category_sequence",
-//            allocationSize = 1
-//    )
-//    @GeneratedValue(
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "category_sequence"
-//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
     @Column(nullable = false, columnDefinition = "varchar(64)", name = "category_name_key")

@@ -13,15 +13,7 @@ import lombok.*;
 public class CategoryType {
     @Id
     @Column(name = "category_type_id")
-    @SequenceGenerator(
-            name = "category_type_sequence",
-            sequenceName = "category_type_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "category_type_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryTypeId;
 
     @Column(columnDefinition = "varchar(128) NOT NULL", name = "category_type_name")
