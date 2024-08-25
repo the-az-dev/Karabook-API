@@ -1,4 +1,4 @@
-package org.theaz.karabookapi.dto;
+package org.theaz.karabookapi.dto.update;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ public class ImageUpdateDTO {
     public String imageRawData;
     public Long categoryId;
     public Boolean enabled;
-    public Date modifiedDate;
+    public Date modifiedDate = new Date();
     public Boolean isDaily;
     public Long sort;
 }

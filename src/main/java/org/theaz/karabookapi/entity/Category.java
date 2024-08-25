@@ -1,13 +1,16 @@
 package org.theaz.karabookapi.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "category")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Category {
     @Id
     @Column(name = "category_id")
@@ -29,7 +32,7 @@ public class Category {
     @Column(name = "category_type_id")
     private Long categoryTypeId = 0L;
 
-    @Column(name="sort")
+    @Column(name = "sort")
     private Long sort;
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", name = "modified_date")

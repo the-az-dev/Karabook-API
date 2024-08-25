@@ -14,9 +14,8 @@ public class CategoryTypeController {
     @Autowired
     private CategoryTypeService categoryTypeService;
 
-    @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> addCategoryType(@RequestBody CategoryType categoryType) {
+    @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public void addCategoryType(@RequestBody CategoryType categoryType) {
         this.categoryTypeService.save(categoryType);
-        return new ResponseEntity<>("Category type Added!", HttpStatus.OK);
     }
 }

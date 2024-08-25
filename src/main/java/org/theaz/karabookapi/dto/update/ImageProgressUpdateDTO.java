@@ -1,4 +1,4 @@
-package org.theaz.karabookapi.dto;
+package org.theaz.karabookapi.dto.update;
 
 import lombok.Data;
 
@@ -11,5 +11,5 @@ public class ImageProgressUpdateDTO {
     public Long userId;
     public String completedImageParts;
     public Boolean isCompleted;
-    public Date modifiedDate;
+    public Date modifiedDate = new Date();
 }

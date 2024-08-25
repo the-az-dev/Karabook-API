@@ -18,14 +18,13 @@ public class CategoryParentController {
     public ResponseEntity<?> getAll() {
         try {
             return new ResponseEntity<>(this.categoryParentService.findAll(), HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> add(@RequestBody CategoryParent categoryParent) {
+    @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public void add(@RequestBody CategoryParent categoryParent) {
         this.categoryParentService.save(categoryParent);
-        return new ResponseEntity<>("Category parent Added!", HttpStatus.OK);
     }
 }

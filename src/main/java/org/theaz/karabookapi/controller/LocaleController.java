@@ -19,9 +19,8 @@ public class LocaleController {
         return this.localeService.findAll();
     }
 
-    @PostMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String add(@RequestBody Locale locale){
+    @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public void add(@RequestBody Locale locale) {
         this.localeService.save(locale);
-        return "Locale added successfully!";
     }
 }

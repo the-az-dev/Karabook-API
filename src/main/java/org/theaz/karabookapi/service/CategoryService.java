@@ -3,7 +3,7 @@ package org.theaz.karabookapi.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.theaz.karabookapi.dto.CategoryUpdateDTO;
+import org.theaz.karabookapi.dto.update.CategoryUpdateDTO;
 import org.theaz.karabookapi.entity.Category;
 import org.theaz.karabookapi.repository.CategoryRepository;
 
@@ -38,8 +38,8 @@ public class CategoryService {
                 newCategory.getCategoryPreview() != null
                         ? newCategory.getCategoryPreview()
                         : exitingCategory.getCategoryPreview() != null
-                        ? exitingCategory.getCategoryPreview()
-                        : null);
+                                ? exitingCategory.getCategoryPreview()
+                                : null);
         exitingCategory.setCategoryTypeId(
                 newCategory.getCategoryTypeId() != null
                         ? newCategory.getCategoryTypeId()
@@ -56,12 +56,16 @@ public class CategoryService {
                 newCategory.getEnabled() != null
                         ? newCategory.getEnabled()
                         : exitingCategory.getEnabled());
+        exitingCategory.setSort(
+                newCategory.getSort() != null
+                        ? newCategory.getSort()
+                        : exitingCategory.getSort());
         exitingCategory.setModifiedDate(nowDate);
         this.categoryRepository.save(exitingCategory);
         return exitingCategory;
     }
 
-    public void delete(Long categoryId){
+    public void delete(Long categoryId) {
         this.categoryRepository.deleteByCategoryId(categoryId);
     }
 }

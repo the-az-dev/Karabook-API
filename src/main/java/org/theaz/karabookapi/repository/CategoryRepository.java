@@ -9,6 +9,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllByOrderBySortAsc();
 
     List<Category> findAllByCategoryTypeIdOrderBySortAsc(Long categoryTypeId);
+
     Category findByCategoryIdOrderBySortAsc(Long categoryId);
+
     void deleteByCategoryId(Long categoryId);
 }

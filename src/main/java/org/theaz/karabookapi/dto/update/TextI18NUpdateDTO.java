@@ -1,4 +1,4 @@
-package org.theaz.karabookapi.dto;
+package org.theaz.karabookapi.dto.update;
 
 import lombok.Data;
 
@@ -9,5 +9,5 @@ public class TextI18NUpdateDTO {
     public String textKey;
     public String textValue;
     public String locale;
-    public Date modifiedDate;
+    public Date modifiedDate = new Date();
 }

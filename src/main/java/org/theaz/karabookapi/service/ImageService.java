@@ -3,11 +3,12 @@ package org.theaz.karabookapi.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.theaz.karabookapi.dto.ImageChangeDTO;
-import org.theaz.karabookapi.dto.ImageUpdateDTO;
+import org.theaz.karabookapi.dto.change.ImageChangeDTO;
+import org.theaz.karabookapi.dto.update.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.repository.ImageRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,17 +19,6 @@ public class ImageService {
 
     public List<Image> getAllImages() {
         return imageRepository.findAll();
-    }
-
-    public List<ImageChangeDTO> getAllImageChanges(){
-        List<ImageChangeDTO> result = imageRepository.findAll().stream().map( (Image image) -> new ImageChangeDTO(
-                image.getImageId(),
-                image.getModifiedDate().getTime(),
-                image.getCategoryId(),
-                image.getIsDaily(),
-                image.getSort()
-                )).toList();
-        return result;
     }
 
     public Image getImageByImageId(Long imageId) {
@@ -56,40 +46,30 @@ public class ImageService {
     }
 
     public Image update(Image existingImage, ImageUpdateDTO image) {
-        existingImage.setImageId(
-                image.getImageId() != null
-                        ? image.getImageId()
-                        : existingImage.getImageId()
-        );
-
         existingImage.setImageRawData(
                 image.getImageRawData() != null
                         ? image.getImageRawData()
-                        : existingImage.getImageRawData()
-        );
+                        : existingImage.getImageRawData());
 
         existingImage.setCategoryId(
                 image.getCategoryId() != null
                         ? image.getCategoryId()
-                        : existingImage.getCategoryId()
-        );
+                        : existingImage.getCategoryId());
 
         existingImage.setEnabled(
                 image.getEnabled() != null
                         ? image.getEnabled()
-                        : existingImage.getEnabled()
-        );
+                        : existingImage.getEnabled());
 
         existingImage.setIsDaily(
                 image.getIsDaily() != null
                         ? image.getIsDaily()
-                        : existingImage.getIsDaily()
-        );
+                        : existingImage.getIsDaily());
 
         existingImage.setSort(
-                image.getSort() != null ? image.getSort(): existingImage.getSort()
-        );
-
+                image.getSort() != null ? image.getSort() : existingImage.getSort());
+        Date currentDate = new Date();
+        existingImage.setModifiedDate(currentDate);
         imageRepository.save(existingImage);
 
         return existingImage;

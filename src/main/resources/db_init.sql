@@ -64,6 +64,26 @@ CREATE TABLE user
     CONSTRAINT PK_image_progress PRIMARY KEY (user_id)
 );
 
+CREATE TABLE achivement (
+    achivement_id int NOT NULL AUTO_INCREMENT,
+    achivement_name_key varchar(64) NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE,
+    achivement_max_points int NOT NULL,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Achivement PRIMARY KEY (achivement_id)
+);
+
+CREATE TABLE achivement_progress
+(
+    achivement_progress_id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    achivement_id int NOT NULL,
+    completed_points int NOT NULL,
+    is_complete BOOLEAN,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_image_progress PRIMARY KEY (achivement_progress_id)
+);
+
 ALTER TABLE `category` ADD CONSTRAINT `tablesConnectionByNameKey` FOREIGN KEY (`category_name_key`) REFERENCES `text_i18n`(`text_key`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `category` ADD CONSTRAINT `tablesConnectionByDescriptionKey` FOREIGN KEY (`category_description_key`) REFERENCES `text_i18n`(`text_key`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `category` ADD CONSTRAINT `tablesConnectionByCategoryType` FOREIGN KEY (`category_type_id`) REFERENCES `category_type`(`category_type_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -75,3 +95,6 @@ ALTER TABLE `image` ADD CONSTRAINT `tablesConnectionByImageCategoryID` FOREIGN K
 
 ALTER TABLE `image_progress` ADD CONSTRAINT `tablesConnectionByImageID` FOREIGN KEY (`image_id`) REFERENCES `image`(`image_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `image_progress` ADD CONSTRAINT `tablesConnectionByUserID` FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `achivement_progress` ADD CONSTRAINT `ACHtablesConnectionByAchivementID` FOREIGN KEY (`achivement_id`) REFERENCES `achivement`(`achivement_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `achivement_progress` ADD CONSTRAINT `ACHtablesConnectionByUserID` FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

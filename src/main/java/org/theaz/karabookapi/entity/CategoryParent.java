@@ -5,7 +5,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "category_parent")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class CategoryParent {
     @Id
     @Column(name = "id")

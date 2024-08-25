@@ -1,9 +1,5 @@
-package org.theaz.karabookapi.dto;
+package org.theaz.karabookapi.dto.change;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data @AllArgsConstructor
 public class ImageChangeDTO {
     public Long imageId;
     public Long modifiedDate;

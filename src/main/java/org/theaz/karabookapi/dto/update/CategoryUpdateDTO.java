@@ -1,4 +1,4 @@
-package org.theaz.karabookapi.dto;
+package org.theaz.karabookapi.dto.update;
 
 import lombok.Data;
 
@@ -13,4 +13,5 @@ public class CategoryUpdateDTO {
     public Boolean enabled;
     public Long categoryTypeId;
     public Date modifiedDate;
+    public Long sort;
 }
