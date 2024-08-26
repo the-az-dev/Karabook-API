@@ -23,4 +23,6 @@ public class LocaleService {
     public List<Locale> findAll() {
         return this.localeRepository.findAll();
     }
+
+
 }

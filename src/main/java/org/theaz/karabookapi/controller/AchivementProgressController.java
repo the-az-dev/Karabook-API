@@ -1,6 +1,7 @@
 package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,15 @@ public class AchivementProgressController {
     @Autowired
     private AchivementService achivementService;
 
+    @Value("${dev.static.token}")
+    private String staticDevToken;
+
     @GetMapping({ "/get/all" })
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            return new ResponseEntity<>(this.achivementProgressService.getAll(), HttpStatus.OK);
+            if(staticDevToken.equals(devAccessToken)) {
+                return new ResponseEntity<>(this.achivementProgressService.getAll(), HttpStatus.OK);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }

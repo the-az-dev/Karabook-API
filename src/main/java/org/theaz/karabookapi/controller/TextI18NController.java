@@ -3,6 +3,7 @@ package org.theaz.karabookapi.controller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,9 @@ public class TextI18NController {
     @Autowired
     private TextI18NService textI18NService;
 
+    @Value("${dev.static.token}")
+    private String staticDevToken;
+
     /**
      * Повертає всі тексти для всіх локалей.
      * Не рекомендується.
@@ -43,8 +47,10 @@ public class TextI18NController {
      * @return несортований список
      */
     @GetMapping("/get/all")
-    public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(this.textI18NService.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
+        if(staticDevToken.equals(devAccessToken)) {
+            return new ResponseEntity<>(this.textI18NService.findAll(), HttpStatus.OK);
+        } else return new ResponseEntity<>(new Exception("Need to set dev_access_token"), HttpStatus.FORBIDDEN);
     }
 
     /**
@@ -107,21 +113,27 @@ public class TextI18NController {
      */
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void save(@RequestBody TextI18N textI18N) {
-        Date currentDate = new Date();
-        textI18N.setModifiedDate(currentDate);
-        this.textI18NService.save(textI18N);
+    public void save(@RequestBody TextI18N textI18N, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
+        if(staticDevToken.equals(devAccessToken)) {
+            Date currentDate = new Date();
+            textI18N.setModifiedDate(currentDate);
+            this.textI18NService.save(textI18N);
+        } else return;
     }
 
     @PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void update(@RequestBody TextI18NUpdateDTO textI18N) {
-        TextI18N exitingTextI18N = this.textI18NService.findByTextKey(textI18N.getTextKey());
-        this.textI18NService.update(exitingTextI18N, textI18N);
-        this.textI18NService.update(exitingTextI18N, textI18N);
+    public void update(@RequestBody TextI18NUpdateDTO textI18N, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
+        if(staticDevToken.equals(devAccessToken)) {
+            TextI18N exitingTextI18N = this.textI18NService.findByTextKey(textI18N.getTextKey());
+            this.textI18NService.update(exitingTextI18N, textI18N);
+            this.textI18NService.update(exitingTextI18N, textI18N);
+        } else return;
     }
 
     @DeleteMapping("/delete/")
-    public void delete(@RequestParam(value = "id", required = true) String textKey) {
-        this.textI18NService.delete(textKey);
+    public void delete(@RequestParam(value = "id", required = true) String textKey, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
+        if(staticDevToken.equals(devAccessToken)) {
+            this.textI18NService.delete(textKey);
+        } else return;
     }
 }

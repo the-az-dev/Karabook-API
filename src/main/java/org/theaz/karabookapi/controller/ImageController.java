@@ -1,16 +1,11 @@
 package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.change.ImageChangeDTO;
 import org.theaz.karabookapi.dto.update.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
@@ -27,6 +22,9 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    @Value("${dev.static.token}")
+    private String staticDevToken;
+
     /**
      * Повертає список всіх картинок
      * Не рекомендується
@@ -35,9 +33,11 @@ public class ImageController {
      * @return
      */
     @GetMapping("/get/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
+            if(staticDevToken.equals(devAccessToken)) {
+                return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -141,47 +141,57 @@ public class ImageController {
 
     @GetMapping("/get/all/ByDailyAndCategory/")
     public ResponseEntity<?> getAllImagesByDailyAndCategoryId(
-            @RequestParam(value = "value", required = true) Long categoryId) {
+            @RequestParam(value = "value", required = true) Long categoryId, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            return new ResponseEntity<>(this.imageService.getAllImagesByCategoryIdAndIsDaily(categoryId),
-                    HttpStatus.OK);
+            if(staticDevToken.equals(devAccessToken)) {
+                return new ResponseEntity<>(this.imageService.getAllImagesByCategoryIdAndIsDaily(categoryId),
+                        HttpStatus.OK);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
     @GetMapping("/get/all/ByDaily/forAdmin")
-    public ResponseEntity<?> getAllImagesByDaily() {
+    public ResponseEntity<?> getAllImagesByDaily(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            return new ResponseEntity<>(this.imageService.getAllImagesByIsDaily(true), HttpStatus.OK);
+            if(staticDevToken.equals(devAccessToken)) {
+                return new ResponseEntity<>(this.imageService.getAllImagesByIsDaily(true), HttpStatus.OK);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void save(@RequestBody Image image) {
+    public void save(@RequestBody Image image, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            Date currentDate = new Date();
-            image.setModifiedDate(currentDate);
-            this.imageService.save(image);
+            if(staticDevToken.equals(devAccessToken)) {
+                Date currentDate = new Date();
+                image.setModifiedDate(currentDate);
+                this.imageService.save(image);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
     @PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void update(@RequestBody ImageUpdateDTO image) {
+    public void update(@RequestBody ImageUpdateDTO image, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
-            this.imageService.update(exitingImage, image);
+            if(staticDevToken.equals(devAccessToken)) {
+                Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
+                this.imageService.update(exitingImage, image);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
     @DeleteMapping("/delete/")
-    public void delete(@RequestParam(value = "id", required = true) Long imageId) {
-        this.imageService.delete(imageId);
+    public void delete(@RequestParam(value = "id", required = true) Long imageId, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
+        if(staticDevToken.equals(devAccessToken)) {
+            this.imageService.delete(imageId);
+        } else return;
     }
 }

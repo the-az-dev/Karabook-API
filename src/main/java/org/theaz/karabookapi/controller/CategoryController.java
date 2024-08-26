@@ -1,6 +1,7 @@
 package org.theaz.karabookapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.theaz.karabookapi.dto.change.CategoryChangeDTO;
@@ -22,10 +23,15 @@ public class CategoryController {
     @Autowired
     private CategoryTypeService categoryTypeService;
 
+    @Value("${dev.static.token}")
+    private String staticDevToken;
+
     @GetMapping("/get/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            return new ResponseEntity<>(this.categoryService.getAllCategories(), HttpStatus.OK);
+            if(staticDevToken.equals(devAccessToken)) {
+                return new ResponseEntity<>(this.categoryService.getAllCategories(), HttpStatus.OK);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -92,30 +98,36 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void addCategory(@RequestBody Category category) {
+    public void addCategory(@RequestBody Category category, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            Date currentDate = new Date();
-            category.setModifiedDate(currentDate);
-            this.categoryService.save(category);
+            if(staticDevToken.equals(devAccessToken)) {
+                Date currentDate = new Date();
+                category.setModifiedDate(currentDate);
+                this.categoryService.save(category);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     @PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void updateCategory(@RequestBody CategoryUpdateDTO category) {
+    public void updateCategory(@RequestBody CategoryUpdateDTO category, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            Category exitingCategory = this.categoryService.getCategoryById(category.getCategoryId());
-            this.categoryService.update(exitingCategory, category);
+            if(staticDevToken.equals(devAccessToken)) {
+                Category exitingCategory = this.categoryService.getCategoryById(category.getCategoryId());
+                this.categoryService.update(exitingCategory, category);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
     @DeleteMapping("/delete/")
-    public void deleteCategory(@RequestParam(value = "id", required = true) Long categotyId) {
+    public void deleteCategory(@RequestParam(value = "id", required = true) Long categotyId, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            this.categoryService.delete(categotyId);
+            if(staticDevToken.equals(devAccessToken)) {
+                this.categoryService.delete(categotyId);
+            } else throw new Exception("Need to set dev_access_token");
         } catch (Exception e) {
             System.out.println(e);
         }
