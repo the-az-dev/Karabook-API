@@ -29,9 +29,7 @@ public class AchivementProgressController {
     @GetMapping({ "/get/all" })
     public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                return new ResponseEntity<>(this.achivementProgressService.getAll(), HttpStatus.OK);
-            } else throw new Exception("Need to set dev_access_token");
+            return new ResponseEntity<>(this.achivementProgressService.getAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }

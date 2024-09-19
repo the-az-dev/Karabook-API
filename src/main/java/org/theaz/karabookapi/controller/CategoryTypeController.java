@@ -20,8 +20,6 @@ public class CategoryTypeController {
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void addCategoryType(@RequestBody CategoryType categoryType, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
-        if(staticDevToken.equals(devAccessToken)) {
-            this.categoryTypeService.save(categoryType);
-        }
+        this.categoryTypeService.save(categoryType);
     }
 }

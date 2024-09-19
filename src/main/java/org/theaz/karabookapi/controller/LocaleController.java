@@ -20,15 +20,11 @@ public class LocaleController {
 
     @GetMapping("/get/all")
     public List<Locale> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
-        if(staticDevToken.equals(devAccessToken)) {
-            return this.localeService.findAll();
-        } else return (List<Locale>) new Exception("Need to set dev_access_token");
+        return this.localeService.findAll();
     }
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void add(@RequestBody Locale locale, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
-        if(staticDevToken.equals(devAccessToken)) {
-            this.localeService.save(locale);
-        } else return;
+        this.localeService.save(locale);
     }
 }

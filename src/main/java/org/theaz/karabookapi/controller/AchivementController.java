@@ -26,9 +26,7 @@ public class AchivementController {
     @GetMapping({ "/get/all" })
     public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                return new ResponseEntity<>(this.achivementService.getAll(), HttpStatus.OK);
-            } else throw new Exception("Need to set dev_access_token");
+            return new ResponseEntity<>(this.achivementService.getAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -89,12 +87,9 @@ public class AchivementController {
     @PostMapping(value = { "/add" }, consumes = { "application/json", "multipart/form-data" })
     public void save(@RequestBody Achivement achivement, @RequestHeader(value = "dev_access_token") String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                Date currentDate = new Date();
-                achivement.setModifiedDate(currentDate);
-                this.achivementService.save(achivement);
-            }
-            else throw new Exception("Need to set dev_access_token");
+            Date currentDate = new Date();
+            achivement.setModifiedDate(currentDate);
+            this.achivementService.save(achivement);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -103,10 +98,8 @@ public class AchivementController {
     @PutMapping(value = { "/update" }, consumes = { "application/json", "multipart/form-data" })
     public void update(@RequestBody AchivementUpdateDTO achivement, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                Achivement exAchivement = this.achivementService.getOneById(achivement.getAchivementId());
-                this.achivementService.update(achivement, exAchivement);
-            } else throw new Exception("Need to set dev_access_token");
+            Achivement exAchivement = this.achivementService.getOneById(achivement.getAchivementId());
+            this.achivementService.update(achivement, exAchivement);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

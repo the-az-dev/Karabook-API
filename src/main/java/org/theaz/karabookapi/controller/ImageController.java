@@ -35,9 +35,7 @@ public class ImageController {
     @GetMapping("/get/all")
     public ResponseEntity<?> getAll(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
-            } else throw new Exception("Need to set dev_access_token");
+            return new ResponseEntity<>(this.imageService.getAllImages(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -143,10 +141,8 @@ public class ImageController {
     public ResponseEntity<?> getAllImagesByDailyAndCategoryId(
             @RequestParam(value = "value", required = true) Long categoryId, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                return new ResponseEntity<>(this.imageService.getAllImagesByCategoryIdAndIsDaily(categoryId),
-                        HttpStatus.OK);
-            } else throw new Exception("Need to set dev_access_token");
+            return new ResponseEntity<>(this.imageService.getAllImagesByCategoryIdAndIsDaily(categoryId),
+                    HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -155,9 +151,7 @@ public class ImageController {
     @GetMapping("/get/all/ByDaily/forAdmin")
     public ResponseEntity<?> getAllImagesByDaily(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                return new ResponseEntity<>(this.imageService.getAllImagesByIsDaily(true), HttpStatus.OK);
-            } else throw new Exception("Need to set dev_access_token");
+            return new ResponseEntity<>(this.imageService.getAllImagesByIsDaily(true), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -166,11 +160,9 @@ public class ImageController {
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void save(@RequestBody Image image, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                Date currentDate = new Date();
-                image.setModifiedDate(currentDate);
-                this.imageService.save(image);
-            } else throw new Exception("Need to set dev_access_token");
+            Date currentDate = new Date();
+            image.setModifiedDate(currentDate);
+            this.imageService.save(image);
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -179,10 +171,8 @@ public class ImageController {
     @PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void update(@RequestBody ImageUpdateDTO image, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
         try {
-            if(staticDevToken.equals(devAccessToken)) {
-                Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
-                this.imageService.update(exitingImage, image);
-            } else throw new Exception("Need to set dev_access_token");
+            Image exitingImage = this.imageService.getImageByImageId(image.getImageId());
+            this.imageService.update(exitingImage, image);
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -190,8 +180,6 @@ public class ImageController {
 
     @DeleteMapping("/delete/")
     public void delete(@RequestParam(value = "id", required = true) Long imageId, @RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
-        if(staticDevToken.equals(devAccessToken)) {
-            this.imageService.delete(imageId);
-        } else return;
+        this.imageService.delete(imageId);
     }
 }

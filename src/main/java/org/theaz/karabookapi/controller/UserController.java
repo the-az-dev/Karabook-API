@@ -26,9 +26,7 @@ public class UserController {
 
     @GetMapping("/get/all")
     public ResponseEntity<?> getAllUsers(@RequestHeader(value = "dev_access_token", required = false) String devAccessToken) {
-        if(staticDevToken.equals(devAccessToken)) {
-            return new ResponseEntity<>(this.userService.findAll(), HttpStatus.OK);
-        } else return new ResponseEntity<>( new Exception("Need to set dev_access_token"), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(this.userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/get/all/ByUserEmail/")
@@ -54,7 +52,7 @@ public class UserController {
     @DeleteMapping({ "/delete/byId" })
     public void delete(@RequestParam(value = "value", required = true) Long user_id) {
         this.imageProgressService.deleteByUserId(user_id);
-        this.achivementProgressService.deleteAllByUserId(user_id);
+        //this.achivementProgressService.deleteAllByUserId(user_id);
         this.userService.deleteByUserId(user_id);
     }
 }

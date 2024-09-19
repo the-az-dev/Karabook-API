@@ -98,3 +98,4 @@ ALTER TABLE `image_progress` ADD CONSTRAINT `tablesConnectionByUserID` FOREIGN K
 
 ALTER TABLE `achivement_progress` ADD CONSTRAINT `ACHtablesConnectionByAchivementID` FOREIGN KEY (`achivement_id`) REFERENCES `achivement`(`achivement_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `achivement_progress` ADD CONSTRAINT `ACHtablesConnectionByUserID` FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `achivement` ADD CONSTRAINT `tablesConnectionByAchiveNameKey` FOREIGN KEY (`achivement_name_key`) REFERENCES `text_i18n`(`text_key`) ON DELETE RESTRICT ON UPDATE RESTRICT;
