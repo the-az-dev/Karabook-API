@@ -23,8 +23,11 @@ public class AchivementProgress {
     @Column(name = "achivement_id")
     private Long achivementId;
 
-    @Column(columnDefinition = "bool default FALSE", nullable = false, name = "is_completed")
+    @Column(columnDefinition = "bool default FALSE", nullable = false, name = "is_complete")
     private Boolean isCompleted = true;
+
+    @Column(columnDefinition = "bool default FALSE", nullable = false, name = "is_recived")
+    private Boolean isRecived = true;
 
     @Column(name = "completed_points")
     private Long completedPoints = 0L;

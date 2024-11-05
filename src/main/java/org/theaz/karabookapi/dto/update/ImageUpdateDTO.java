@@ -13,4 +13,6 @@ public class ImageUpdateDTO {
     public Date modifiedDate = new Date();
     public Boolean isDaily;
     public Long sort;
+    public String tag;
+    public String achivementsIds;
 }

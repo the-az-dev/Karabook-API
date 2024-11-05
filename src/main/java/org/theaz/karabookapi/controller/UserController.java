@@ -49,10 +49,19 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    @PatchMapping(value = "/update/hintsAmount/")
+    public void updateHintsAmount(@RequestBody User user) {
+        User existingUser = this.userService.findByUserID(user.getUserId());
+        existingUser.setHintsAmount(user.getHintsAmount());
+        this.userService.save(existingUser);
+    }
+
     @DeleteMapping({ "/delete/byId" })
     public void delete(@RequestParam(value = "value", required = true) Long user_id) {
         this.imageProgressService.deleteByUserId(user_id);
-        //this.achivementProgressService.deleteAllByUserId(user_id);
+        if(!this.achivementProgressService.getAllByUserId(user_id).isEmpty()) {
+            this.achivementProgressService.deleteAllByUserId(user_id);
+        }
         this.userService.deleteByUserId(user_id);
     }
 }

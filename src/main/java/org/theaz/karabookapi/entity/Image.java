@@ -35,4 +35,13 @@ public class Image {
 
     @Column(name = "is_daily")
     private Boolean isDaily;
+
+    @Column(name = "tag")
+    private String tag;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "achivements_ids")
+    private String achivementsIds;
 }

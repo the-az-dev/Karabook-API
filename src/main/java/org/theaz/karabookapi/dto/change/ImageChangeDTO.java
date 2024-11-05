@@ -6,4 +6,6 @@ public class ImageChangeDTO {
     public Long categoryId;
     public Boolean isDaily;
     public Long sort;
+    public String tag;
+    public String achivementsIds;
 }

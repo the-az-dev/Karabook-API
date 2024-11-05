@@ -22,6 +22,10 @@ public class UserService {
         return this.userRepository.findByUserEmail(userEmail);
     }
 
+    public User findByUserID(Long userId) {
+        return this.userRepository.findByUserId(userId);
+    }
+
     public void save(User user) {
         this.userRepository.save(user);
     }

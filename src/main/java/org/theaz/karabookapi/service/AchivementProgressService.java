@@ -44,6 +44,19 @@ public class AchivementProgressService {
                 newAchivementsProgress.getIsCompleted() != null ? newAchivementsProgress.getIsCompleted()
                         : exitingAchivementsProgress.getIsCompleted());
 
+        exitingAchivementsProgress.setUserId(
+                newAchivementsProgress.getUserId() != null ? newAchivementsProgress.getUserId()
+                        : exitingAchivementsProgress.getUserId());
+
+        exitingAchivementsProgress.setIsRecived(
+                newAchivementsProgress.getIsRecived() != null ? newAchivementsProgress.getIsRecived()
+                        : exitingAchivementsProgress.getIsRecived());
+
+        exitingAchivementsProgress.setAchivementId(
+                newAchivementsProgress.getAchivementId() != null ? newAchivementsProgress.getAchivementId()
+                        : exitingAchivementsProgress.getAchivementId()
+        );
+
         exitingAchivementsProgress.setModifiedDate(currentDate);
 
         this.achivementProgressRepository.save(exitingAchivementsProgress);

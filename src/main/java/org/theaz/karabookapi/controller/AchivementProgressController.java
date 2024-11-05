@@ -59,6 +59,8 @@ public class AchivementProgressController {
                 achivementProgressChangesDTO.achivementId = achivementProgress.getAchivementId();
                 achivementProgressChangesDTO.completedPoints = achivementProgress.getCompletedPoints();
                 achivementProgressChangesDTO.modifiedDate = milliseconds;
+                achivementProgressChangesDTO.isCompleted = achivementProgress.getIsCompleted();
+                achivementProgressChangesDTO.isRecived = achivementProgress.getIsRecived();
 
                 Map<Long, AchivementProgressResponseDTO> achivementMap = new HashMap<Long, AchivementProgressResponseDTO>();
                 achivementMap.put(achivementProgress.getAchivementsProgressId(), achivementProgressChangesDTO);

@@ -43,6 +43,7 @@ CREATE TABLE image (
     enabled BOOLEAN DEFAULT TRUE,
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     is_daily BOOLEAN DEFAULT FALSE NOT NULL,
+    tag varchar(64) NOT NULL
     CONSTRAINT PK_image PRIMARY KEY (image_id)
 );
 
@@ -61,6 +62,7 @@ CREATE TABLE user
 (
     user_id int NOT NULL AUTO_INCREMENT,
     user_email varchar(100) NOT NULL,
+    hints_amount int NOT NULL,
     CONSTRAINT PK_image_progress PRIMARY KEY (user_id)
 );
 
@@ -92,6 +94,7 @@ ALTER TABLE `text_i18n` ADD CONSTRAINT `tablesConnectionByLocale` FOREIGN KEY (`
 ALTER TABLE `category_parent` ADD CONSTRAINT `tablesConnectionByCategoryParent` FOREIGN KEY (`category_id`) REFERENCES `category`(`category_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `category_parent` ADD CONSTRAINT `tablesConnectionByCategoryID` FOREIGN KEY (`category_parent_id`) REFERENCES `category`(`category_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `image` ADD CONSTRAINT `tablesConnectionByImageCategoryID` FOREIGN KEY (`category_id`) REFERENCES `category`(`category_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `image` ADD CONSTRAINT `tablesConnectionByTag` FOREIGN KEY (`tag`) REFERENCES `text_i18n`(`text_key`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `image_progress` ADD CONSTRAINT `tablesConnectionByImageID` FOREIGN KEY (`image_id`) REFERENCES `image`(`image_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `image_progress` ADD CONSTRAINT `tablesConnectionByUserID` FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

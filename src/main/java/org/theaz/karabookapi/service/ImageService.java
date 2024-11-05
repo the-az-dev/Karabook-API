@@ -68,6 +68,17 @@ public class ImageService {
 
         existingImage.setSort(
                 image.getSort() != null ? image.getSort() : existingImage.getSort());
+
+        existingImage.setTag(
+                image.getTag() != null
+                        ? image.getTag()
+                        : existingImage.getTag());
+
+        existingImage.setAchivementsIds(
+                image.getAchivementsIds() != null
+                        ? image.getAchivementsIds()
+                        : existingImage.getAchivementsIds());
+
         Date currentDate = new Date();
         existingImage.setModifiedDate(currentDate);
         imageRepository.save(existingImage);

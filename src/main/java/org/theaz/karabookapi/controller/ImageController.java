@@ -125,6 +125,8 @@ public class ImageController {
                 imageChangeDTO.isDaily = image.getIsDaily();
                 imageChangeDTO.modifiedDate = milliseconds;
                 imageChangeDTO.sort = image.getSort();
+                imageChangeDTO.tag = image.getTag();
+                imageChangeDTO.achivementsIds = image.getAchivementsIds();
 
                 imageChangeDTOs.add(imageChangeDTO);
             }

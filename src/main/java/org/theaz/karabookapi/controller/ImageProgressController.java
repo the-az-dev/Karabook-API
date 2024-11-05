@@ -10,7 +10,7 @@ import org.theaz.karabookapi.dto.change.ImageProgressChangeDTO;
 import org.theaz.karabookapi.dto.response.ImageProgressResponseDTO;
 import org.theaz.karabookapi.dto.update.ImageProgressUpdateDTO;
 import org.theaz.karabookapi.entity.ImageProgress;
-import org.theaz.karabookapi.service.ImageProgressService;
+import org.theaz.karabookapi.service.*;
 
 import java.time.Instant;
 import java.util.*;
@@ -20,6 +20,18 @@ import java.util.*;
 public class ImageProgressController {
     @Autowired
     private ImageProgressService imageProgressService;
+
+    @Autowired
+    private AchivementProgressService achivementProgressService;
+
+    @Autowired
+    private AchivementService achivementService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${dev.static.token}")
     private String staticDevToken;
@@ -45,15 +57,15 @@ public class ImageProgressController {
                     imageProgresses.add(imageProgress);
             } else {
                 String[] imageProgressIds = ids.split(",");
+                if (imageProgressIds.length == 0) {
+                    return new ResponseEntity<>("Image progesses not found!", HttpStatus.NOT_FOUND);
+                }
                 for (String id : imageProgressIds) {
                     ImageProgress imageProgress = this.imageProgressService.getImageProgressById(Long.parseLong(id));
                     if (imageProgress == null)
                         continue;
                     else
                         imageProgresses.add(imageProgress);
-                }
-                if (imageProgressIds.length == 0) {
-                    return new ResponseEntity<>("Image progesses not found!", HttpStatus.NOT_FOUND);
                 }
             }
             return new ResponseEntity<>(imageProgresses, HttpStatus.OK);
@@ -122,14 +134,14 @@ public class ImageProgressController {
 
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void save(@RequestBody ImageProgress imageProgress) {
-        this.imageProgressService.save(imageProgress);
+        this.imageProgressService.save(imageProgress, this.imageService, this.userService, this.achivementService, this.achivementProgressService);
     }
 
     @PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public void update(@RequestBody ImageProgressUpdateDTO imageProgress) {
         ImageProgress exitingImageProgress = this.imageProgressService
                 .getImageProgressById(imageProgress.getImageProgressId());
-        this.imageProgressService.update(exitingImageProgress, imageProgress);
+        this.imageProgressService.update(exitingImageProgress, imageProgress, this.userService, this.imageService, this.achivementService, this.achivementProgressService);
     }
 
     @DeleteMapping("/delete/ById")

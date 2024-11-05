@@ -18,4 +18,7 @@ public class User {
 
     @Column(name = "user_email")
     private String userEmail;
+
+    @Column(name = "hints_amount")
+    private Long hintsAmount;
 }

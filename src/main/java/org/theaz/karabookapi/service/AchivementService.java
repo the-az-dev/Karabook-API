@@ -41,7 +41,23 @@ public class AchivementService {
 
         exAchivement.setAchivementsMaxPoints(
                 newAchivement.getAchivementsMaxPoints() != null ? newAchivement.getAchivementsMaxPoints()
-                        : exAchivement.getAchivementId());
+                        : exAchivement.getAchivementsMaxPoints());
+
+        exAchivement.setAchivementsDescriptionKey(
+                newAchivement.getAchivementsDescriptionKey() != null ? newAchivement.getAchivementsDescriptionKey()
+                        : exAchivement.getAchivementsNameKey());
+
+        exAchivement.setEnabled(
+                newAchivement.getEnabled() != null ? newAchivement.getEnabled()
+                        : exAchivement.getEnabled());
+
+        exAchivement.setTipsNumber(
+                newAchivement.getTipsNumber() != null ? newAchivement.getTipsNumber()
+                        : exAchivement.getTipsNumber());
+
+        exAchivement.setImage(
+                newAchivement.getImage() != null ? newAchivement.getImage() : exAchivement.getImage()
+        );
 
         exAchivement.setModifiedDate(currentDate);
 

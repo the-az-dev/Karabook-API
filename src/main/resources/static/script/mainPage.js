@@ -11,6 +11,9 @@ $(document).ready(function () {
     $('.scroll-control .three').click(function () {
         $.scrollify.move('#s-three');
     });
+    $('.scroll-control .four').click(function () {
+        $.scrollify.move('#s-four');
+    });
 });
 
 $(window).on('resize', function () {
@@ -43,7 +46,7 @@ function applyScroll() {
             }
 
             var currentSection = sections[index].attr("id");
-            if (currentSection !== "s-two") {
+            if (currentSection !== "s-two" || currentSection !== "s-four") {
                 $(".header").css("color", "black");
                 $(".header .navbar a").css("color", "black"); 
                 $(".header .icons").css("color", "black"); 
