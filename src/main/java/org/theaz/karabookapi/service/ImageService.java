@@ -2,12 +2,14 @@ package org.theaz.karabookapi.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.theaz.karabookapi.dto.change.ImageChangeDTO;
 import org.theaz.karabookapi.dto.update.ImageUpdateDTO;
 import org.theaz.karabookapi.entity.Image;
 import org.theaz.karabookapi.repository.ImageRepository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -88,5 +90,23 @@ public class ImageService {
 
     public void delete(Long imageId) {
         imageRepository.deleteByImageId(imageId);
+    }
+
+    @Scheduled(cron = "0 0 0 * * *") // every day at 00:00 by GMT +2:00
+    @Transactional
+    public void setDailyImages(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -7);
+
+        Date sevenDaysAgo = cal.getTime();
+
+        List<Image> imagesToUpdate = imageRepository.findByEnabledAndIsDailyAndModifiedDate(true, true, sevenDaysAgo);
+
+        for (Image image : imagesToUpdate) {
+            Date newDate = new Date();
+            image.setIsDaily(false);
+            image.setModifiedDate(newDate);
+            imageRepository.save(image);
+        }
     }
 }

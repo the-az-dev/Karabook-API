@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.theaz.karabookapi.entity.Image;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     List<Image> findByCategoryIdAndIsDaily(Long categoryId, Boolean isDaily);
 
     void deleteByImageId(Long imageId);
+
+    List<Image> findByEnabledAndIsDailyAndModifiedDate(boolean enabled, boolean isDaily, Date modifiedDate);
 }
